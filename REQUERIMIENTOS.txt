@@ -1,0 +1,196 @@
+================================================================================
+REQUERIMIENTOS Y GUÍA DE PUESTA EN MARCHA DEL SISTEMA
+Proyecto: Monitor Psicopedagógico - Instituto Félix de Jesús Rougier
+================================================================================
+
+Este documento describe todas las dependencias del entorno, paquetes de PHP,
+librerías de frontend, la arquitectura de la base de datos en español y los pasos
+detallados para que cualquier compañero pueda instalar, ejecutar y acceder al
+sistema, ya sea en su propia computadora o a través de la red local (Wi-Fi).
+
+--------------------------------------------------------------------------------
+A. GUÍA DE INSTALACIÓN Y PUESTA EN MARCHA (PARA COMPAÑEROS DE EQUIPO)
+--------------------------------------------------------------------------------
+
+Siga estos pasos para clonar o copiar el proyecto y correrlo de forma independiente
+en otra computadora o en el equipo de un compañero:
+
+1. Requisitos previos en el equipo:
+   - PHP 8.4 o superior (con extensiones pdo_mysql, curl, mbstring, openssl, zip activas).
+     Si tiene una versión antigua (ej. PHP 8.2 de XAMPP), puede instalar PHP 8.5
+     en 1 minuto ejecutando en PowerShell:
+     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.5'))
+   - Composer (https://getcomposer.org/)
+   - MySQL / MariaDB (por ejemplo, mediante XAMPP activando el botón "Start" en MySQL).
+
+2. Crear la base de datos MySQL:
+   En phpMyAdmin (http://localhost/phpmyadmin) o en la consola MySQL, crear la BD:
+   CREATE DATABASE instituto_felix CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+3. Configurar el proyecto en la máquina:
+   Abrir una terminal en la carpeta del proyecto y ejecutar:
+   - Instalar dependencias PHP:
+     composer install
+   - Crear el archivo de entorno (si no existe):
+     copy .env.example .env
+   - Generar la clave única de Laravel:
+     php artisan key:generate
+   - Crear las tablas en español y cargar los datos iniciales (Admin, Ciclos y Grupos):
+     php artisan migrate --seed
+
+     * ¿Qué hace este comando?
+       1. "migrate": Lee las migraciones y crea automáticamente en MySQL las 16 tablas
+          del sistema completamente en español (usuarios, alumnos, grupos, ciclos_escolares,
+          inscripciones, expedientes_alumnos, citas, observaciones, entrevistas, etc.).
+       2. "--seed": Inserta de inmediato los registros obligatorios para operar:
+          - Usuario Administrador: admin@felix.edu.mx (contraseña: admin1234).
+          - 2 Ciclos Escolares (2025-2026 y 2026-2027 activo).
+          - 12 Grupos escolares oficiales (4°, 5° y 6° en secciones A, B, C y D).
+          - 0 Alumnos de prueba (dejando el sistema limpio para pruebas manuales).
+
+     * Si en cualquier momento desea reiniciar la base de datos limpia desde cero:
+       php artisan migrate:fresh --seed
+       (Borra todas las tablas y las reconstruye desde cero con el admin y grupos).
+
+     * Nota de automatización:
+       El script "iniciar.bat" ya incluye una comprobación automática de migraciones,
+       por lo que si se agregan nuevas tablas en el futuro, se aplicarán al arrancar.
+
+4. Iniciar el servidor del sistema (elegir cualquiera de las dos formas):
+   - Forma 1 (Comando directo de Laravel):
+     php artisan serve
+     (Asegurarse de que MySQL esté activo en XAMPP y abrir en el navegador: http://127.0.0.1:8000).
+
+   - Forma 2 (Script automático de Windows):
+     Hacer doble clic en el archivo "iniciar.bat" (o escribir "iniciar.bat" en la terminal).
+     Configura automáticamente la versión correcta de PHP, arranca MySQL si está apagado
+     y abre el navegador en http://127.0.0.1:8000.
+
+5. Credenciales de acceso predeterminadas:
+   - Correo:       admin@felix.edu.mx
+   - Contraseña:   admin1234
+   - Rol:          Administrador Técnico (Acceso completo a todos los módulos)
+
+--------------------------------------------------------------------------------
+B. REQUISITOS DEL ENTORNO
+--------------------------------------------------------------------------------
+
+1. PHP:
+   - Versión requerida: PHP 8.4 o PHP 8.5 (compatible con Laravel 11/12/Boost).
+   - Tipo de ejecución: CLI y Web Server (PHP built-in server, Herd, Apache o Nginx).
+
+2. Extensiones PHP obligatorias (activadas en php.ini):
+   - pdo_mysql (motor de base de datos principal)
+   - mysqli
+   - pdo_sqlite / sqlite3 (soporte alternativo)
+   - mbstring
+   - openssl
+   - tokenizer
+   - xml / libxml / dom / xmlwriter (necesarias para Laravel y reportes DomPDF)
+   - curl
+   - fileinfo (para validación y carga segura de documentos y evidencias)
+   - gd (para procesamiento y renderizado de imágenes en PDFs)
+   - zip
+   - session
+   - ctype
+   - json
+
+3. Gestor de Paquetes PHP:
+   - Composer 2.x (versión 2.8.x o posterior).
+
+4. Base de Datos:
+   - MySQL 8.0+ / MariaDB 10.4+ (Configuración activa):
+     Base de datos:       instituto_felix
+     Host:                127.0.0.1 (puerto 3306)
+     Usuario:             root (sin contraseña por defecto en XAMPP)
+     Cotejamiento:        utf8mb4_unicode_ci
+     Tablas del sistema:  100% en español
+
+5. Node.js y Gestor de Paquetes Frontend:
+   - Node.js versión 20.x o 22.x LTS.
+   - npm versión 10.x o superior.
+
+6. Sistema Operativo:
+   - Totalmente compatible con Windows 10/11, macOS y Linux.
+
+--------------------------------------------------------------------------------
+C. ESTRUCTURA DE TABLAS  (MYSQL)
+--------------------------------------------------------------------------------
+
+Todas las tablas de la aplicación están organizadas:
+
+1. usuarios                  : Cuentas del personal (Docentes, Psicopedagogía, Dirección, Admin).
+2. ciclos_escolares          : Periodos lectivos (ej. 2025-2026, 2026-2027).
+3. grupos                    : Grados y secciones escolares con etiqueta y descripción.
+4. grupo_usuario             : Tabla pivote que asigna docentes a grupos específicos.
+5. alumnos                   : Registro de estudiantes del instituto.
+6. inscripciones             : Historial y asignación actual de un alumno a un grupo y ciclo.
+7. expedientes_alumnos       : Expediente clínico/psicopedagógico digital (Rutas A, B y C).
+8. observaciones             : Bitácoras e incidencias registradas a un estudiante.
+9. firmas_observaciones      : Firmas de enterado y asistencia para cada bitácora.
+10. entrevistas              : Entrevistas con padres de familia o tutores.
+11. acuerdos                 : Compromisos y acuerdos con fecha límite de cumplimiento.
+12. citas                    : Agenda del calendario psicopedagógico (horarios y estado).
+13. documentos               : Archivos digitales y evidencias adjuntas al expediente.
+14. solicitudes_acceso       : Peticiones de docentes para consultar expedientes restringidos.
+15. permisos_acceso          : Autorizaciones aprobadas con fecha de expiración.
+16. bitacoras_auditoria      : Trazabilidad y registro de cambios en el sistema.
+
+--------------------------------------------------------------------------------
+D. DEPENDENCIAS DE PHP (COMPOSER)
+--------------------------------------------------------------------------------
+
+Paquetes Principales:
+- php: ^8.4 / 8.5
+- laravel/framework: ^13.17 (Framework base)
+- livewire/livewire: ^3.6.4 (Componentes reactivos full-stack)
+- livewire/volt: ^1.7.0 (Componentes funcionales de Livewire)
+- barryvdh/laravel-dompdf: ^3.1 (Generador de expedientes y reportes en PDF)
+- spatie/laravel-permission: ^8.3 (Control granular de roles y permisos)
+- laravel/tinker: ^3.0 (Consola interactiva REPL)
+
+Paquetes de Desarrollo y Pruebas:
+- pestphp/pest: ^5.3 (Framework de pruebas automatizadas)
+- pestphp/pest-plugin-laravel: ^5.0 (Integración de Pest con Laravel)
+- laravel/breeze: ^2.4 (Scaffolding de autenticación con Livewire)
+- laravel/pint: ^1.27 (Formateador de código PHP PSR-12)
+- mockery/mockery: ^1.6 (Simulación de objetos en pruebas)
+- nunomaduro/collision: ^8.6 (Manejador visual de excepciones en terminal)
+- fakerphp/faker: ^1.23 (Generador de datos ficticios)
+
+--------------------------------------------------------------------------------
+E. DEPENDENCIAS DE FRONTEND (NPM / VITE)
+--------------------------------------------------------------------------------
+
+Dependencias de Producción:
+- alpinejs: ^3.17.4 (Microframework reactivo para modales, dropdowns y tabs)
+- chart.js: ^4.5.1 (Visualización interactiva de estadísticas psicopedagógicas)
+
+Dependencias de Desarrollo:
+- vite: ^8.0.0 (Bundler y servidor de desarrollo ultra-rápido)
+- laravel-vite-plugin: ^3.1 (Integración de Vite con Blade)
+- tailwindcss: ^4.3.3 (Framework CSS utility-first)
+- @tailwindcss/vite: ^4.0.0 (Plugin oficial de Tailwind CSS v4 para Vite)
+- @tailwindcss/forms: ^0.5.2 (Estilos base para inputs y formularios)
+- axios: ^1.20.0 (Cliente HTTP para solicitudes asíncronas con token CSRF)
+- postcss: ^8.4.31
+- autoprefixer: ^10.4.2
+- concurrently: ^10.0.3
+
+--------------------------------------------------------------------------------
+F. COMANDOS ÚTILES DE MANTENIMIENTO
+--------------------------------------------------------------------------------
+
+- Iniciar servidor manualmente:
+  php artisan serve --host=0.0.0.0 --port=8000
+
+- Ejecutar todas las pruebas automatizadas (Pest):
+  php artisan test
+
+- Limpiar caché de la aplicación y vistas:
+  php artisan optimize:clear
+
+- Regenerar base de datos limpia con datos base (Admin, ciclos y grupos):
+  php artisan migrate:fresh --seed
+
+================================================================================

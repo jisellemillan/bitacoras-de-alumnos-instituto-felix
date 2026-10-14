@@ -1,0 +1,190 @@
+/* ============================================================
+   modals.styles.css — Diálogos y paneles laterales
+   ============================================================ */
+
+/* Backdrop */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0 0 0 / 0.5);
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    backdrop-filter: blur(2px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Panel */
+.modal-panel {
+    background-color: var(--color-white);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 600px;
+    max-height: calc(100dvh - 2rem);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modal-in 0.2s ease;
+    margin: auto;
+    position: relative;
+}
+
+.modal-panel-lg  { max-width: 800px; }
+.modal-panel-xl  { max-width: 1000px; }
+.modal-panel-sm  { max-width: 440px; }
+
+/* Contenedor de formulario dentro de modal-panel para permitir scroll correcto */
+.modal-panel > form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    height: 100%;
+}
+
+@keyframes modal-in {
+    from { opacity: 0; transform: scale(0.96) translateY(-8px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+/* Header del modal */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    gap: var(--space-4);
+    flex-shrink: 0;
+    background-color: var(--color-white);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--color-green-dark);
+    margin: 0;
+}
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.modal-close:hover {
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
+}
+
+/* Cuerpo del modal con scroll suave y respetando flex constraints */
+.modal-body {
+    padding: var(--space-6);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* Footer del modal */
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+/* Ajustes adaptables para pantallas pequeñas */
+@media (max-width: 640px) {
+    .modal-backdrop {
+        padding: var(--space-2);
+        align-items: center;
+    }
+
+    .modal-panel {
+        max-height: calc(100dvh - 1rem);
+        border-radius: var(--radius-xl);
+    }
+
+    .modal-header {
+        padding: var(--space-4);
+    }
+
+    .modal-body {
+        padding: var(--space-4);
+    }
+
+    .modal-footer {
+        padding: var(--space-3) var(--space-4);
+    }
+}
+
+/* Modal de confirmación de eliminación */
+.modal-confirm-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-4);
+}
+
+.modal-confirm-icon.danger { background-color: var(--color-error-bg); color: var(--color-error); }
+
+/* Panel lateral (slide-over) */
+.slide-over-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0 0 0 / 0.4);
+    z-index: 60;
+}
+
+.slide-over-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 480px;
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-xl);
+    z-index: 61;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slide-in 0.25s ease;
+}
+
+@keyframes slide-in {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+}
+
+.slide-over-panel .modal-body { padding: var(--space-5); }

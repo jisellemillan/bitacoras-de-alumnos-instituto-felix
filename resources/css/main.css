@@ -1,0 +1,42 @@
+/* ============================================================
+   main.css — Único punto de entrada CSS
+   Solo contiene @import. El orden importa: base → layout →
+   components → pages → utilities
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+/* Tailwind 4 */
+@import "tailwindcss";
+
+/* ── Base ─────────────────────────────────────────────────── */
+@import "./base/variables.css";
+@import "./base/reset.css";
+@import "./base/typography.css";
+
+/* ── Layout ───────────────────────────────────────────────── */
+@import "./layout/sidebar.styles.css";
+@import "./layout/header.styles.css";
+@import "./layout/grid.styles.css";
+@import "./layout/responsive.styles.css";
+
+/* ── Components ───────────────────────────────────────────── */
+@import "./components/buttons.styles.css";
+@import "./components/cards.styles.css";
+@import "./components/forms.styles.css";
+@import "./components/tables.styles.css";
+@import "./components/modals.styles.css";
+@import "./components/badges.styles.css";
+@import "./components/toasts.styles.css";
+@import "./components/tabs.styles.css";
+
+/* ── Pages ─────────────────────────────────────────────────── */
+@import "./pages/dashboard.styles.css";
+@import "./pages/students.styles.css";
+@import "./pages/student-file.styles.css";
+@import "./pages/agreements.styles.css";
+@import "./pages/calendar.styles.css";
+@import "./pages/auth.styles.css";
+
+/* ── Utilities ─────────────────────────────────────────────── */
+@import "./utilities/helpers.styles.css";

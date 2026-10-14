@@ -1,0 +1,189 @@
+/* ============================================================
+   pdf-base.css — Estilos base para todos los PDF
+   Nota: DomPDF no soporta @import, estos estilos se inyectan
+   directamente en las plantillas via PdfStyles::get()
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'DejaVu Sans', Arial, sans-serif;
+    font-size: 10pt;
+    color: #1A2E1C;
+    line-height: 1.5;
+    background: #FFFFFF;
+}
+
+/* Cabecera institucional */
+.pdf-header {
+    display: table;
+    width: 100%;
+    border-bottom: 2px solid #2E7D32;
+    padding-bottom: 8pt;
+    margin-bottom: 14pt;
+}
+
+.pdf-header-left  { display: table-cell; width: 70%; vertical-align: middle; }
+.pdf-header-right { display: table-cell; width: 30%; text-align: right; vertical-align: middle; }
+
+.pdf-institution-name {
+    font-size: 9pt;
+    font-weight: bold;
+    color: #1F5C2E;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pdf-lema {
+    font-size: 7pt;
+    color: #4A5E4C;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 2pt;
+}
+
+.pdf-form-title {
+    text-align: center;
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1F5C2E;
+    margin-bottom: 6pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Fecha en formato "Mexicali B.C., a __ de _____ del 20__" */
+.pdf-date-line {
+    text-align: right;
+    font-size: 9pt;
+    color: #1A2E1C;
+    margin-bottom: 10pt;
+}
+
+/* Campos de datos */
+.pdf-field-row {
+    display: table;
+    width: 100%;
+    margin-bottom: 6pt;
+}
+
+.pdf-field-label {
+    display: table-cell;
+    font-weight: bold;
+    font-size: 9pt;
+    white-space: nowrap;
+    padding-right: 4pt;
+    width: 1%;
+}
+
+.pdf-field-value {
+    display: table-cell;
+    border-bottom: 1px solid #1A2E1C;
+    font-size: 9pt;
+    width: 99%;
+    padding-bottom: 1pt;
+}
+
+/* Recuadros con bordes redondeados (como el formato físico) */
+.pdf-box {
+    border: 1.5px solid #1A2E1C;
+    border-radius: 8pt;
+    padding: 8pt 10pt;
+    margin-bottom: 10pt;
+    min-height: 60pt;
+}
+
+.pdf-box-title {
+    font-weight: bold;
+    font-size: 9pt;
+    margin-bottom: 6pt;
+    color: #1F5C2E;
+}
+
+.pdf-box-content {
+    font-size: 9pt;
+    line-height: 1.6;
+}
+
+/* Líneas de texto */
+.pdf-line {
+    border-bottom: 0.5px solid #888;
+    min-height: 14pt;
+    margin-bottom: 4pt;
+}
+
+/* Casillas (checkboxes) */
+.pdf-checkbox-group {
+    margin-bottom: 8pt;
+}
+
+.pdf-checkbox-item {
+    display: inline-block;
+    margin-right: 16pt;
+    font-size: 9pt;
+}
+
+.pdf-checkbox { display: inline-block; width: 10pt; height: 10pt; border: 1px solid #1A2E1C; margin-right: 3pt; vertical-align: middle; text-align: center; font-size: 8pt; line-height: 10pt; }
+.pdf-checkbox.checked { background-color: #2E7D32; color: white; }
+
+/* Sección de firmas */
+.pdf-signatures {
+    margin-top: 16pt;
+    display: table;
+    width: 100%;
+}
+
+.pdf-sig-row { display: table-row; }
+
+.pdf-sig-cell {
+    display: table-cell;
+    width: 50%;
+    text-align: center;
+    padding: 0 10pt 12pt;
+    vertical-align: bottom;
+}
+
+.pdf-sig-line {
+    border-top: 1px solid #1A2E1C;
+    padding-top: 3pt;
+    font-size: 7.5pt;
+    color: #4A5E4C;
+}
+
+/* Pie de página */
+.pdf-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #DDE5DB;
+    padding-top: 5pt;
+    text-align: center;
+    font-size: 7pt;
+    color: #6B7B6E;
+}
+
+.pdf-footer-main   { font-weight: bold; color: #1F5C2E; margin-bottom: 2pt; }
+.pdf-footer-address { color: #6B7B6E; }
+
+/* Marca de agua CONFIDENCIAL */
+.pdf-confidential {
+    position: fixed;
+    top: 35%;
+    left: 10%;
+    right: 10%;
+    text-align: center;
+    font-size: 42pt;
+    font-weight: bold;
+    color: rgba(198, 40, 40, 0.06);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: rotate(-35deg);
+    z-index: -1;
+}
+
+/* Numeración */
+.pdf-page-number { position: fixed; bottom: 18pt; right: 20pt; font-size: 7pt; color: #6B7B6E; }
+
+/* Marca de generación */
+.pdf-generated-by { font-size: 7pt; color: #9CA3AF; text-align: right; margin-bottom: 8pt; }

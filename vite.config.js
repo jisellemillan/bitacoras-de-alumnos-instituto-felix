@@ -1,24 +1,22 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
+        tailwindcss(),
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-            fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
-                }),
+            // Punto de entrada CSS: main.css (con todos los @import)
+            // Punto de entrada JS: app.js (con todos los módulos)
+            input: ['resources/css/main.css', 'resources/js/app.js'],
+            refresh: [
+                'resources/views/**',
+                'app/Livewire/**',
+                'app/View/Components/**',
+                'routes/**',
             ],
         }),
-        tailwindcss(),
     ],
-    server: {
-        watch: {
-            ignored: ['**/storage/framework/views/**'],
-        },
-    },
+    // Tailwind 4 maneja @import nativamente via el plugin oficial
+    // No se necesita postcss-import adicional
 });

@@ -1,0 +1,110 @@
+/* ============================================================
+   tabs.styles.css — Pestañas del expediente y otras vistas
+   ============================================================ */
+
+.tabs-nav {
+    display: flex;
+    border-bottom: 2px solid var(--color-border);
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tabs-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+    min-height: 44px;
+}
+
+.tab-btn:hover {
+    color: var(--color-green-main);
+    background-color: var(--color-green-light);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.tab-btn.active {
+    color: var(--color-green-main);
+    border-bottom-color: var(--color-green-main);
+    font-weight: var(--font-semibold);
+}
+
+.tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 var(--space-1);
+    background-color: var(--color-green-light);
+    color: var(--color-green-dark);
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: var(--font-bold);
+}
+
+.tab-btn.active .tab-count {
+    background-color: var(--color-green-main);
+    color: var(--color-white);
+}
+
+/* Contenido de pestaña */
+.tab-content { padding: var(--space-6) 0; }
+
+/* Timeline de seguimiento */
+.timeline {
+    position: relative;
+    padding-left: var(--space-8);
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--color-border);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: var(--space-6);
+}
+
+.timeline-dot {
+    position: absolute;
+    left: calc(-1 * var(--space-8) + var(--space-1));
+    top: var(--space-1);
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-green-main);
+    border: 3px solid var(--color-white);
+    box-shadow: 0 0 0 2px var(--color-green-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-dot.observation { background-color: var(--color-green-main); }
+.timeline-dot.interview   { background-color: var(--color-info); box-shadow: 0 0 0 2px var(--color-info); }
+.timeline-dot.agreement   { background-color: var(--color-gold); box-shadow: 0 0 0 2px var(--color-gold); }
+.timeline-dot.appointment { background-color: var(--color-warning); box-shadow: 0 0 0 2px var(--color-warning); }
+
+.timeline-date   { font-size: var(--text-xs); color: var(--color-muted); margin-bottom: var(--space-1); }
+.timeline-card   { background-color: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); }
+.timeline-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2); gap: var(--space-2); }

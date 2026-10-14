@@ -1,0 +1,52 @@
+/* agreements.styles.css — Tablero kanban */
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+}
+
+.kanban-column {
+    background-color: var(--color-bg);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.kanban-column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 2px solid;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+}
+
+.kanban-column.pendiente  .kanban-column-header { border-color: var(--color-gold);        background-color: var(--color-gold-light);  color: var(--color-gold-dark); }
+.kanban-column.en_proceso .kanban-column-header { border-color: var(--color-info);         background-color: var(--color-info-bg);    color: var(--color-info); }
+.kanban-column.cumplido   .kanban-column-header { border-color: var(--color-green-main);   background-color: var(--color-green-light); color: var(--color-green-dark); }
+.kanban-column.cancelado  .kanban-column-header { border-color: #9CA3AF;                   background-color: #F3F4F6;                 color: #4B5563; }
+
+.kanban-cards { padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-3); min-height: 80px; }
+
+.kanban-card {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast);
+    cursor: pointer;
+}
+
+.kanban-card:hover { box-shadow: var(--shadow-md); }
+
+.kanban-card-student { font-size: var(--text-xs); color: var(--color-green-main); font-weight: var(--font-semibold); margin-bottom: var(--space-1); }
+.kanban-card-desc    { font-size: var(--text-sm); color: var(--color-text); margin-bottom: var(--space-2); line-height: var(--leading-tight); }
+.kanban-card-footer  { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.kanban-card-due     { font-size: var(--text-xs); color: var(--color-muted); }
+.kanban-card-due.overdue { color: var(--color-error); font-weight: var(--font-semibold); }
+
+@media (max-width: 1024px) { .kanban-board { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .kanban-board { grid-template-columns: 1fr; } }

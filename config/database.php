@@ -33,15 +33,15 @@ return [
     'connections' => [
 
         'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
+            'driver'                  => 'sqlite',
+            'url'                     => env('DB_URL'),
+            'database'                => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix'                  => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
-            'transaction_mode' => 'DEFERRED',
+            'busy_timeout'            => 5000,      // ms — handles concurrent Livewire requests
+            'journal_mode'            => 'WAL',     // Write-Ahead Logging for concurrency
+            'synchronous'             => 'NORMAL',  // safe + fast with WAL
+            'transaction_mode'        => 'IMMEDIATE',
         ],
 
         'mysql' => [

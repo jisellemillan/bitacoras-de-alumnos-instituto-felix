@@ -1,0 +1,87 @@
+/* ============================================================
+   grid.styles.css — Layout principal y contenedor de contenido
+   ============================================================ */
+
+/* Wrapper raíz: sidebar fijo + contenido */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Zona de contenido principal */
+.app-main {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding-top: var(--header-height);
+    min-width: 0;
+    transition: margin-left var(--transition-normal);
+    background-color: var(--color-bg);
+}
+
+.app-main.sidebar-collapsed {
+    margin-left: var(--sidebar-width-collapsed);
+}
+
+/* Contenedor de página */
+.page-container {
+    padding: var(--space-6);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+}
+
+/* Encabezado de página */
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    flex-wrap: wrap;
+}
+
+.page-header-info { flex: 1; min-width: 0; }
+.page-header-actions { display: flex; gap: var(--space-3); flex-shrink: 0; flex-wrap: wrap; }
+
+/* Grids de tarjetas */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-4);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-4);
+}
+
+.two-col-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+}
+
+.three-col-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-6);
+}
+
+/* Panel lateral de detalle */
+.detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--space-6);
+    align-items: start;
+}
+
+/* Pantalla de carga */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255 255 255 / 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}

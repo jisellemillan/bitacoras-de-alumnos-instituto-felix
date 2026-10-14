@@ -1,0 +1,43 @@
+/* ============================================================
+   typography.css — Escala tipográfica y estilos de texto
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-semibold);
+    line-height: var(--leading-tight);
+    color: var(--color-text);
+    margin: 0;
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+h5 { font-size: var(--text-base); }
+h6 { font-size: var(--text-sm); }
+
+p { margin: 0 0 var(--space-4); }
+p:last-child { margin-bottom: 0; }
+
+.text-muted  { color: var(--color-muted); }
+.text-small  { font-size: var(--text-sm); }
+.text-strong { font-weight: var(--font-semibold); }
+.text-mono   { font-family: var(--font-mono); }
+
+/* Etiqueta de sección */
+.section-label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+}
+
+/* Título de página */
+.page-title {
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-green-dark);
+}
