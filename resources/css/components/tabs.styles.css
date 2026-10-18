@@ -31,14 +31,14 @@
 }
 
 .tab-btn:hover {
-    color: var(--color-green-main);
-    background-color: var(--color-green-light);
+    color: var(--color-blue-main);
+    background-color: var(--color-blue-light);
     border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 .tab-btn.active {
-    color: var(--color-green-main);
-    border-bottom-color: var(--color-green-main);
+    color: var(--color-blue-main);
+    border-bottom-color: var(--color-blue-main);
     font-weight: var(--font-semibold);
 }
 
@@ -49,15 +49,15 @@
     min-width: 20px;
     height: 20px;
     padding: 0 var(--space-1);
-    background-color: var(--color-green-light);
-    color: var(--color-green-dark);
+    background-color: var(--color-blue-light);
+    color: var(--color-blue-dark);
     border-radius: var(--radius-full);
     font-size: 10px;
     font-weight: var(--font-bold);
 }
 
 .tab-btn.active .tab-count {
-    background-color: var(--color-green-main);
+    background-color: var(--color-blue-main);
     color: var(--color-white);
 }
 
@@ -92,15 +92,15 @@
     width: 20px;
     height: 20px;
     border-radius: var(--radius-full);
-    background-color: var(--color-green-main);
+    background-color: var(--color-blue-main);
     border: 3px solid var(--color-white);
-    box-shadow: 0 0 0 2px var(--color-green-main);
+    box-shadow: 0 0 0 2px var(--color-blue-main);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.timeline-dot.observation { background-color: var(--color-green-main); }
+.timeline-dot.observation { background-color: var(--color-blue-main); }
 .timeline-dot.interview   { background-color: var(--color-info); box-shadow: 0 0 0 2px var(--color-info); }
 .timeline-dot.agreement   { background-color: var(--color-gold); box-shadow: 0 0 0 2px var(--color-gold); }
 .timeline-dot.appointment { background-color: var(--color-warning); box-shadow: 0 0 0 2px var(--color-warning); }

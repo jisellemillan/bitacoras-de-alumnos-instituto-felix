@@ -1,5 +1,5 @@
 /* ============================================================
-   sidebar.styles.css — Sidebar verde oscuro colapsable
+   sidebar.styles.css — Sidebar azul oscuro colapsable
    ============================================================ */
 
 .sidebar {
@@ -8,7 +8,7 @@
     left: 0;
     height: 100vh;
     width: var(--sidebar-width);
-    background-color: var(--color-green-dark);
+    background-color: var(--color-blue-dark);
     display: flex;
     flex-direction: column;
     transition: width var(--transition-normal), transform var(--transition-normal);
@@ -41,7 +41,7 @@
     align-items: center;
     justify-content: center;
     font-weight: var(--font-bold);
-    color: var(--color-green-dark);
+    color: var(--color-blue-dark);
     font-size: var(--text-sm);
 }
 
@@ -104,9 +104,9 @@
 }
 
 .sidebar-link.active {
-    background-color: var(--color-green-main);
+    background-color: var(--color-blue-main);
     color: var(--color-white);
-    box-shadow: var(--shadow-green);
+    box-shadow: var(--shadow-blue);
 }
 
 .sidebar-link-icon {
@@ -163,7 +163,7 @@
     width: 34px;
     height: 34px;
     border-radius: var(--radius-full);
-    background-color: var(--color-green-main);
+    background-color: var(--color-blue-main);
     color: var(--color-white);
     display: flex;
     align-items: center;
@@ -199,7 +199,7 @@
     transform: translateY(-50%);
     width: 24px;
     height: 24px;
-    background-color: var(--color-green-main);
+    background-color: var(--color-blue-main);
     border: 2px solid var(--color-white);
     border-radius: var(--radius-full);
     display: flex;
@@ -211,4 +211,4 @@
     z-index: 50;
 }
 
-.sidebar-collapse-btn:hover { background-color: var(--color-green-mid); }
+.sidebar-collapse-btn:hover { background-color: var(--color-blue-mid); }

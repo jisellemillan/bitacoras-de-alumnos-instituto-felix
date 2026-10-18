@@ -19,7 +19,7 @@
     transition: background-color var(--transition-fast);
 }
 
-.activity-item:hover { background-color: var(--color-green-light); }
+.activity-item:hover { background-color: var(--color-blue-light); }
 
 .activity-icon {
     width: 36px;
@@ -64,13 +64,13 @@
 .stat-card--link:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-3px);
-    border-color: var(--color-green-soft);
+    border-color: var(--color-blue-soft);
     text-decoration: none;
     color: inherit;
 }
 
 .stat-card--link:focus-visible {
-    outline: 2px solid var(--color-green-main);
+    outline: 2px solid var(--color-blue-main);
     outline-offset: 2px;
 }
 
@@ -83,7 +83,7 @@
 
 .stat-card-link-hint {
     font-size: var(--text-xs);
-    color: var(--color-green-mid);
+    color: var(--color-blue-mid);
     font-weight: var(--font-medium);
     margin-top: var(--space-1);
     opacity: 0;

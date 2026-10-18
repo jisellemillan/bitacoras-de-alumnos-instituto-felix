@@ -10,7 +10,7 @@
 /* Wire loading */
 [wire\:loading] { opacity: 0.6; }
 [wire\:loading].wire-loading-hidden { display: none; }
-.wire-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(46 125 50 / 0.3); border-top-color: var(--color-green-main); border-radius: 50%; animation: spin 0.6s linear infinite; }
+.wire-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(21 75 191 / 0.3); border-top-color: var(--color-blue-main); border-radius: 50%; animation: spin 0.6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* Aviso de privacidad */
