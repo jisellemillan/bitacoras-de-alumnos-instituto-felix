@@ -97,8 +97,5 @@ new #[Layout('layouts.guest')] class extends Component
             </button>
         </div>
     </form>
-
-    <div class="auth-footer mt-6 text-center text-xs text-muted border-t pt-4">
-        <span>Sección Primaria · Mexicali, B.C.</span>
-    </div>
+   
 </div>

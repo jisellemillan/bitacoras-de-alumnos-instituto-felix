@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
         return redirect()->route('profile');
     })->name('profile.edit');
 
-    Route::post('logout', App\Livewire\Actions\Logout::class)
-        ->name('logout');
+    Route::post('logout', function (App\Livewire\Actions\Logout $logout) {
+    $logout();
+    
+    return redirect('/login');
+})->name('logout');
 });
