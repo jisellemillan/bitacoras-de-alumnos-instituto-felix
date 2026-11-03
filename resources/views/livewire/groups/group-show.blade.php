@@ -9,6 +9,7 @@
         <span class="text-green-950 font-bold">Grupo {{ $group->label }}</span>
     </nav>
 
+    
     {{-- ENCABEZADO DEL GRUPO CON BOTÓN DE REGRESO --}}
     <div class="card p-6 mb-6 bg-gradient-to-r from-white to-green-50/40 border border-green-100">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">

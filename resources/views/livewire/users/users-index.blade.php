@@ -194,14 +194,34 @@
                         <div>
                             <h3 class="text-xs font-bold text-green-900 uppercase tracking-wider mb-2">2. Rol y Asignación de Secciones Permitidas</h3>
 
-                            <div class="form-group mb-4">
-                                <label class="form-label required">Rol en la Institución</label>
-                                <select wire:model="form.role" class="form-select @error('form.role') error @enderror">
-                                    @foreach($roles as $r)
-                                        <option value="{{ $r->value }}">{{ $r->label() }}</option>
-                                    @endforeach
-                                </select>
-                                @error('form.role') <span class="form-error">{{ $message }}</span> @enderror
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="form-group">
+                                    <label class="form-label required">Rol en la Institución</label>
+                                    <select wire:model="form.role" class="form-select @error('form.role') error @enderror">
+                                        @foreach($roles as $r)
+                                            <option value="{{ $r->value }}">{{ $r->label() }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('form.role') <span class="form-error">{{ $message }}</span> @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label font-semibold text-gray-900 block mb-2">Grupos Asignados (Solo Docentes)</label>
+                                    <div class="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto bg-slate-50 p-3 rounded-xl border border-gray-200">
+                                        @forelse($groupsList as $g)
+                                            <label class="flex items-center gap-3 p-1.5 rounded-lg hover:bg-white transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                                                <input type="checkbox" 
+                                                    wire:model="form.group_ids" 
+                                                    value="{{ $g->id }}" 
+                                                    class="form-check-input">
+                                                <span class="text-sm font-medium text-gray-800">{{ $g->full_label ?? $g->name }}</span>
+                                            </label>
+                                        @empty
+                                            <span class="text-xs text-muted italic">No hay grupos registrados en el sistema.</span>
+                                        @endforelse
+                                    </div>
+                                    @error('form.group_ids') <span class="form-error mt-1">{{ $message }}</span> @enderror
+                                </div>
                             </div>
 
                             <label class="form-label font-semibold text-gray-900 block mb-2">
@@ -288,3 +308,4 @@
         </div>
     @endif
 </div>
+

@@ -14,6 +14,7 @@
         </div>
     </div>
 
+
     {{-- BARRA DE FILTROS Y BÚSQUEDA --}}
     <div class="table-card mb-6">
         <div class="p-4 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between bg-white border-b">
@@ -179,6 +180,28 @@
                             </select>
                             @error('school_cycle_id') <span class="form-error">{{ $message }}</span> @enderror
                         </div>
+
+
+                    <div class="form-group mt-3 mb-3">
+                        <label class="form-label font-semibold text-gray-900 block mb-2">Docentes Asignados</label>
+                        <div class="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto bg-slate-50 p-3 rounded-xl border border-gray-200">
+                            @forelse($teachers as $t)
+                                <label class="flex items-center gap-3 p-1.5 rounded-lg hover:bg-white transition-colors cursor-pointer border border-transparent hover:border-gray-200">
+                                    <input type="checkbox" 
+                                        wire:model="teacher_ids" 
+                                        value="{{ $t->id }}" 
+                                        class="form-check-input">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-medium text-gray-800">{{ $t->name }}</span>
+                                        <span class="text-[10px] text-muted">{{ $t->email }}</span>
+                                    </div>
+                                </label>
+                            @empty
+                                <span class="text-xs text-muted italic">No hay docentes titulares o especiales disponibles.</span>
+                            @endforelse
+                        </div>
+                        @error('teacher_ids') <span class="form-error mt-1">{{ $message }}</span> @enderror
+                    </div>
 
                         <div class="grid grid-cols-2 gap-3">
                             <div class="form-group">

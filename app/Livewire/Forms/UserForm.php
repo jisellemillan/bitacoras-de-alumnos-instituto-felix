@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Livewire\Forms;
 
 use App\Enums\UserRole;
@@ -18,6 +19,8 @@ class UserForm extends Form
     public string $role = 'docente_titular';
     public array $section_permissions = [];
     public bool $is_active = true;
+    public array $group_ids = []; //Agregamos esto 1
+
 
     public function rules(): array
     {
@@ -39,6 +42,8 @@ class UserForm extends Form
             'role' => ['required', Rule::enum(UserRole::class)],
             'section_permissions' => ['array'],
             'is_active' => ['boolean'],
+            'group_ids' => ['array'],##
+            'group_ids.*' => ['exists:grupos,id'], //agregamos esto 2
         ];
     }
 

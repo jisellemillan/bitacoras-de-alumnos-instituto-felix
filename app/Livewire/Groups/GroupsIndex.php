@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Groups;
 
+
 use App\Enums\Grade;
 use App\Models\Group;
 use App\Models\SchoolCycle;
@@ -29,6 +30,7 @@ class GroupsIndex extends Component
     public string $name = '';
     public string $description = '';
     public ?int $school_cycle_id = null;
+    public array $teacher_ids = [];
 
     public function updatingSearch(): void
     {
@@ -60,6 +62,7 @@ class GroupsIndex extends Component
         $this->school_cycle_id = $cycle?->id;
 
         $this->showModal = true;
+        $this->teacher_ids = [];
     }
 
     public function openEditModal(int $groupId): void
@@ -74,6 +77,7 @@ class GroupsIndex extends Component
         $this->name = $group->name ?? '';
         $this->description = $group->description ?? '';
         $this->school_cycle_id = $group->school_cycle_id;
+        $this->teacher_ids = $group->teachers()->pluck('usuarios.id')->toArray();
 
         $this->showModal = true;
     }
@@ -95,6 +99,7 @@ class GroupsIndex extends Component
             'name' => ['nullable', 'string', 'max:100'],
             'description' => ['nullable', 'string', 'max:255'],
             'school_cycle_id' => ['required', 'exists:ciclos_escolares,id'],
+            'teacher_ids' => ['array'], 'teacher_ids.*' => ['exists:usuarios,id'],
         ], [
             'section.unique' => "Ya existe la sección {$formattedSection} para este grado y ciclo escolar.",
         ], [
@@ -121,6 +126,13 @@ class GroupsIndex extends Component
             $group = Group::create($data);
             $message = "Grupo {$group->label} creado exitosamente.";
         }
+        
+        // Vincular al maestro titular con este grupo
+        $syncData = [];
+        foreach ($this->teacher_ids as $id) {
+            $syncData[$id] = ['assignment_type' => 'titular'];
+        }
+        $group->teachers()->sync($syncData);
 
         $this->showModal = false;
         $this->dispatch('toast', [
@@ -186,11 +198,13 @@ class GroupsIndex extends Component
         }
 
         $groups = $query->orderBy('grade')->orderBy('section')->paginate(12);
+        $teachers = \App\Models\User::whereIn('role', ['docente_titular', 'docente_especial'])->where('is_active', true)->get();
 
         return view('livewire.groups.groups-index', [
             'groups' => $groups,
             'cycles' => $cycles,
             'currentCycle' => $currentCycle,
+            'teachers' => $teachers,
         ])->layout('layouts.app', ['title' => 'Gestión de Grupos']);
     }
 }

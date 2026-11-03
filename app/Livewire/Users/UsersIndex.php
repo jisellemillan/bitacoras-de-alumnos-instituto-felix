@@ -70,6 +70,7 @@ class UsersIndex extends Component
         // Por defecto, asignar secciones básicas
         $this->form->section_permissions = ['alumnos', 'acuerdos'];
         $this->showModal = true;
+        $this->form->group_ids = [];
     }
 
     public function openEditModal(int $userId): void
@@ -78,6 +79,7 @@ class UsersIndex extends Component
         $this->form->reset();
         $this->isEditing = true;
         $this->form->id = $user->id;
+        $this->form->group_ids = $user->groups()->pluck('grupos.id')->toArray();
         $this->form->first_name = $user->first_name ?? '';
         $this->form->last_name = $user->last_name ?? '';
         $this->form->email = $user->email;
@@ -159,6 +161,12 @@ class UsersIndex extends Component
             $message = "Usuario {$user->name} creado exitosamente con sus permisos asignados.";
         }
 
+        $syncData = [];
+        foreach ($this->form->group_ids as $id) {
+            $syncData[$id] = ['assignment_type' => 'titular']; // Opcional: podrías hacerlo dinámico después
+        }
+        $user->groups()->sync($syncData);
+
         $this->showModal = false;
         $this->dispatch('toast', [
             'type' => 'success',
@@ -231,6 +239,7 @@ class UsersIndex extends Component
         return view('livewire.users.users-index', [
             'users' => $users,
             'roles' => UserRole::cases(),
+            'groupsList' => \App\Models\Group::with('schoolCycle')->get(),
         ]);
     }
 }
