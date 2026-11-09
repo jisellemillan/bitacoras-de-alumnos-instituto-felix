@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="text-xs text-muted mt-1.5 flex items-center gap-2 flex-wrap">
-                        <span><strong>Grado:</strong> {{ $group->grade->label() }} de Primaria</span>
+                        <span><strong>Grado:</strong> {{ $group->grade->label() }} </span>
                         <span>·</span>
                         <span><strong>Sección:</strong> {{ $group->section }}</span>
                         @if($group->name)

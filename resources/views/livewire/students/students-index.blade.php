@@ -39,9 +39,18 @@
         <div>
             <select wire:model.live="gradeFilter" class="filter-select" aria-label="Filtrar por grado">
                 <option value="">Todos los grados</option>
-                <option value="4">4° Primaria</option>
-                <option value="5">5° Primaria</option>
-                <option value="6">6° Primaria</option>
+                <option value="1">1° de Prescolar</option>
+                <option value="2">2° de Prescolar</option>
+                <option value="3">3° de Prescolar</option>
+                <option value="4">1° de Primaria</option>
+                <option value="5">2° de Primaria</option>
+                <option value="6">3° de Primaria</option>
+                <option value="7">4° de Primaria</option>
+                <option value="8">5° de Primaria</option>
+                <option value="9">6° de Primaria</option>
+                <option value="10">1° de Secundaria</option>
+                <option value="11">2° de Secundaria</option>
+                <option value="12">3° de Secundaria</option>
             </select>
         </div>
 
@@ -196,7 +205,7 @@
                 <div class="modal-header">
                     <div>
                         <h2 class="modal-title">{{ $isEditing ? 'Editar Expediente de Alumno' : 'Registrar Nuevo Alumno y Apertura de Expediente' }}</h2>
-                        <span class="text-xs text-muted">Instituto Félix de Jesús Rougier · Primaria</span>
+                        <span class="text-xs text-muted">Instituto Félix de Jesús Rougier </span>
                     </div>
                     <button type="button" wire:click="$set('showModal', false)" class="modal-close" aria-label="Cerrar modal">✕</button>
                 </div>
@@ -366,12 +375,19 @@
                         <div class="form-group">
                             <label class="form-label required font-bold text-xs">Grado Escolar</label>
                             <select wire:model="quick_grade" class="form-select @error('quick_grade') error @enderror">
-                                <option value="1">1° de Primaria</option>
-                                <option value="2">2° de Primaria</option>
-                                <option value="3">3° de Primaria</option>
-                                <option value="4">4° de Primaria</option>
-                                <option value="5">5° de Primaria</option>
-                                <option value="6">6° de Primaria</option>
+                                
+                                <option value="1">1° de Prescolar</option>
+                                <option value="2">2° de Prescolar</option>
+                                <option value="3">3° de Prescolar</option>
+                                <option value="4">1° de Primaria</option>
+                                <option value="5">2° de Primaria</option>
+                                <option value="6">3° de Primaria</option>
+                                <option value="7">4° de Primaria</option>
+                                <option value="8">5° de Primaria</option>
+                                <option value="9">6° de Primaria</option>
+                                <option value="10">1° de Secundaria</option>
+                                <option value="11">2° de Secundaria</option>
+                                <option value="12">3° de Secundaria</option>
                             </select>
                             @error('quick_grade') <span class="form-error">{{ $message }}</span> @enderror
                         </div>

@@ -207,12 +207,18 @@
                             <div class="form-group">
                                 <label class="form-label required">Grado</label>
                                 <select wire:model="grade" class="form-select @error('grade') error @enderror">
-                                    <option value="1">1° de Primaria</option>
-                                    <option value="2">2° de Primaria</option>
-                                    <option value="3">3° de Primaria</option>
-                                    <option value="4">4° de Primaria</option>
-                                    <option value="5">5° de Primaria</option>
-                                    <option value="6">6° de Primaria</option>
+                                    <option value="1">1° de Prescolar</option>
+                                    <option value="2">2° de Prescolar</option>
+                                    <option value="3">3° de Prescolar</option>
+                                    <option value="4">1° de Primaria</option>
+                                    <option value="5">2° de Primaria</option>
+                                    <option value="6">3° de Primaria</option>
+                                    <option value="7">4° de Primaria</option>
+                                    <option value="8">5° de Primaria</option>
+                                    <option value="9">6° de Primaria</option>
+                                    <option value="10">1° de Secundaria</option>
+                                    <option value="11">2° de Secundaria</option>
+                                    <option value="12">3° de Secundaria</option>
                                 </select>
                                 @error('grade') <span class="form-error">{{ $message }}</span> @enderror
                             </div>
