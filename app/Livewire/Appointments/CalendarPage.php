@@ -89,30 +89,49 @@ class CalendarPage extends Component
         ]);
     }
 
-    public function render()
+   public function render()
     {
-        $date = Carbon::createFromFormat('Y-m', $this->currentMonth);
+        $date = \Carbon\Carbon::createFromFormat('Y-m', $this->currentMonth);
         $startOfMonth = $date->copy()->startOfMonth();
         $endOfMonth = $date->copy()->endOfMonth();
+        $user = auth()->user();
 
-        // Obtener citas del mes
-        $appointments = Appointment::with(['student.currentEnrollment.group', 'author'])
+        // Consultas base
+        $query = Appointment::with(['student.currentEnrollment.group', 'author'])
             ->whereBetween('starts_at', [$startOfMonth->copy()->startOfWeek(), $endOfMonth->copy()->endOfWeek()])
-            ->when($this->statusFilter, fn ($q) => $q->where('status', $this->statusFilter))
-            ->orderBy('starts_at')
-            ->get();
+            ->when($this->statusFilter, fn ($q) => $q->where('status', $this->statusFilter));
 
-        // Próximas citas en agenda
-        $upcomingAppointments = Appointment::with(['student.currentEnrollment.group'])
-            ->where('starts_at', '>=', now())
-            ->orderBy('starts_at')
-            ->take(5)
-            ->get();
+        $upcomingQuery = Appointment::with(['student.currentEnrollment.group'])
+            ->where('starts_at', '>=', now());
+
+        // RESTRICCIÓN PARA DOCENTES (Ver citas solo de alumnos permitidos)
+       // RESTRICCIÓN PARA DOCENTES (Ver citas solo de alumnos permitidos y grupos nativos)
+        if ($user->hasRole(\App\Enums\UserRole::DocenteTitular) || $user->hasRole(\App\Enums\UserRole::DocenteEspecial)) {
+            
+            $nativeGroupIds = \Illuminate\Support\Facades\DB::table('grupo_usuario')->where('user_id', $user->id)->pluck('group_id');
+            $grantedGroupIds = \App\Models\AccessGrant::where('user_id', $user->id)->whereNotNull('group_id')->pluck('group_id');
+            
+            $allowedGroupIds = $nativeGroupIds->merge($grantedGroupIds)->unique();
+            $allowedStudentIds = \App\Models\AccessGrant::where('user_id', $user->id)->whereNotNull('student_id')->pluck('student_id');
+
+            $studentFilter = function($q) use ($allowedGroupIds, $allowedStudentIds) {
+                $q->whereIn('id', $allowedStudentIds)
+                  ->orWhereHas('enrollments', function($eq) use ($allowedGroupIds) {
+                      $eq->where('is_current', true)->whereIn('group_id', $allowedGroupIds);
+                  });
+            };
+
+            $query->whereHas('student', $studentFilter);
+            $upcomingQuery->whereHas('student', $studentFilter);
+        }
+
+        $appointments = $query->orderBy('starts_at')->get();
+        $upcomingAppointments = $upcomingQuery->orderBy('starts_at')->take(5)->get();
 
         // Estructura de cuadrícula de calendario
         $days = [];
-        $currentDay = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
-        $calendarEnd = $endOfMonth->copy()->endOfWeek(Carbon::SUNDAY);
+        $currentDay = $startOfMonth->copy()->startOfWeek(\Carbon\Carbon::MONDAY);
+        $calendarEnd = $endOfMonth->copy()->endOfWeek(\Carbon\Carbon::SUNDAY);
 
         while ($currentDay <= $calendarEnd) {
             $dayKey = $currentDay->format('Y-m-d');

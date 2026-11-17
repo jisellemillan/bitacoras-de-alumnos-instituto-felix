@@ -9,6 +9,9 @@ use App\Models\SchoolCycle;
 use App\Models\Student;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+
+
 
 class AppointmentModal extends Component
 {
@@ -179,16 +182,23 @@ class AppointmentModal extends Component
         ]);
     }
 
-    public function render()
+   public function render()
     {
         $cycle = SchoolCycle::current();
-        $groups = $cycle
-            ? Group::where('school_cycle_id', $cycle->id)->orderBy('grade')->orderBy('section')->get()
-            : collect();
+        $user = auth()->user();
+
+        // 1. Obtener la lista base de grupos
+        $groupsQuery = Group::query();
+        if ($cycle) {
+            $groupsQuery->where('school_cycle_id', $cycle->id);
+        }
+        $groups = $groupsQuery->orderBy('grade')->orderBy('section')->get();
+        
         if ($groups->isEmpty()) {
             $groups = Group::orderBy('grade')->orderBy('section')->get();
         }
 
+        // 2. Consulta base de alumnos
         $studentQuery = Student::query()
             ->with('currentEnrollment.group')
             ->orderBy('first_name')
@@ -197,6 +207,42 @@ class AppointmentModal extends Component
         if (!empty($this->filterGroupId)) {
             $studentQuery->whereHas('enrollments', function ($q) {
                 $q->where('is_current', true)->where('group_id', (int) $this->filterGroupId);
+            });
+        }
+
+        // 3. RESTRICCIÓN PARA DOCENTES (Sumando grupos nativos + permisos)
+        if ($user->hasRole(\App\Enums\UserRole::DocenteTitular) || $user->hasRole(\App\Enums\UserRole::DocenteEspecial)) {
+            
+            // A. Grupos asignados nativamente en la creación del maestro
+            $nativeGroupIds = \Illuminate\Support\Facades\DB::table('grupo_usuario')
+                                ->where('user_id', $user->id)
+                                ->pluck('group_id');
+
+            // B. Grupos asignados por permisos especiales de Psicopedagogía
+            $grantedGroupIds = \App\Models\AccessGrant::where('user_id', $user->id)
+                                ->whereNotNull('group_id')
+                                ->pluck('group_id');
+            
+            // C. Juntamos ambas listas y quitamos duplicados
+            $allowedGroupIds = $nativeGroupIds->merge($grantedGroupIds)->unique();
+
+            // D. Alumnos específicos permitidos (si los hay)
+            $allowedStudentIds = \App\Models\AccessGrant::where('user_id', $user->id)
+                                ->whereNotNull('student_id')
+                                ->pluck('student_id');
+
+            // Filtramos la lista de grupos permitidos
+            $groups = $groups->filter(function($group) use ($allowedGroupIds) {
+                return $allowedGroupIds->contains($group->id);
+            });
+
+            // Filtramos la lista de alumnos permitidos
+            $studentQuery->where(function ($q) use ($allowedGroupIds, $allowedStudentIds) {
+                $q->whereIn('id', $allowedStudentIds)
+                  ->orWhereHas('enrollments', function ($eq) use ($allowedGroupIds) {
+                      $eq->where('is_current', true)
+                         ->whereIn('group_id', $allowedGroupIds);
+                  });
             });
         }
 
