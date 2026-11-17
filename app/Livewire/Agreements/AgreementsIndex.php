@@ -81,21 +81,58 @@ class AgreementsIndex extends Component
 
     public function render()
     {
-        $query = Agreement::with(['student.currentEnrollment.group', 'author'])
-            ->when($this->search, function ($q) {
-                $q->where(function ($sub) {
-                    $sub->where('description', 'like', "%{$this->search}%")
-                        ->orWhere('responsible_name', 'like', "%{$this->search}%")
-                        ->orWhereHas('student', function ($sq) {
-                            $sq->where('first_name', 'like', "%{$this->search}%")
-                               ->orWhere('last_name', 'like', "%{$this->search}%");
-                        });
-                });
-            })
-            ->when($this->statusFilter, function ($q) {
-                $q->where('status', $this->statusFilter);
-            });
+        $user = auth()->user();
+        $rolUsuario = $user->role->value ?? $user->role;
 
+        $query = Agreement::with(['student.currentEnrollment.group', 'author']);
+
+        // APLICAR CANDADO ESTRICTO PARA DOCENTES
+        // Solo pueden ver acuerdos de alumnos que estén en sus grupos asignados
+        // o que tengan un permiso temporal ('AccessGrant') aprobado.
+        if (in_array($rolUsuario, ['docente_titular', 'docente_especial'])) {
+            
+            // 1. Obtener IDs de alumnos por permisos temporales aprobados
+            $grantedStudentIds = \App\Models\AccessGrant::where('user_id', $user->id)
+                ->where('is_active', true)
+                ->whereNotNull('student_id')
+                ->pluck('student_id')
+                ->toArray();
+
+            // 2. Obtener IDs de los grupos que el docente tiene asignados
+            $myGroupIds = $user->groups()->pluck('grupos.id')->toArray();
+
+            // 3. Filtrar los acuerdos para que solo traiga los de esos alumnos
+            $query->whereHas('student', function($q) use ($myGroupIds, $grantedStudentIds) {
+                $q->where(function($subQ) use ($myGroupIds, $grantedStudentIds) {
+                    // Condición A: El alumno está en uno de los grupos actuales del maestro
+                    $subQ->whereHas('enrollments', function ($eq) use ($myGroupIds) {
+                        $eq->whereIn('group_id', $myGroupIds)
+                           ->where('is_current', true);
+                    })
+                    // Condición B: O el maestro tiene permiso explícito para ese alumno
+                    ->orWhereIn('alumnos.id', $grantedStudentIds);
+                });
+            });
+        }
+
+        // Aplicar búsqueda (ya existente)
+        $query->when($this->search, function ($q) {
+            $q->where(function ($sub) {
+                $sub->where('description', 'like', "%{$this->search}%")
+                    ->orWhere('responsible_name', 'like', "%{$this->search}%")
+                    ->orWhereHas('student', function ($sq) {
+                        $sq->where('first_name', 'like', "%{$this->search}%")
+                           ->orWhere('last_name', 'like', "%{$this->search}%");
+                    });
+            });
+        });
+
+        // Aplicar filtro por estado (ya existente)
+        $query->when($this->statusFilter, function ($q) {
+            $q->where('status', $this->statusFilter);
+        });
+
+        // Retornar resultados según el modo de vista (ya existente)
         if ($this->viewMode === 'kanban') {
             $agreements = (clone $query)->orderBy('due_date')->get();
             $groupedAgreements = [

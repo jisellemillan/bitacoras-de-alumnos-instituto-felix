@@ -17,8 +17,33 @@ class CheckSectionAccess
             return redirect()->route('login');
         }
 
-        // 1. El administrador siempre tiene acceso ilimitado
+// 1. El administrador técnico tiene acceso a configuración general, usuarios y accesos,
+        // PERO NO a módulos confidenciales (acuerdos, calendario, alumnos, reportes).
         if ($user->isAdminTecnico()) {
+            $student = $request->route('student');
+            $group = $request->route('group');
+            
+            $reqSections = [];
+            foreach ($sections as $s) {
+                foreach (explode(',', $s) as $sub) {
+                    $reqSections[] = trim($sub);
+                }
+            }
+
+            // A) Bloqueo por ID: Si la URL intenta acceder a un alumno o grupo específico (ej. /grupos/1)
+            if ($student || $group) {
+                abort(403, 'Acceso denegado. Los detalles internos de los grupos y expedientes son confidenciales.');
+            }
+
+            // B) Bloqueo por Sección: Solo lo dejamos pasar si la ruta está etiquetada 
+            // como 'configuracion', 'usuarios' o 'solicitudes_acceso' en web.php
+            $allowedForTech = ['configuracion', 'usuarios', 'solicitudes_acceso'];
+            $hasAllowedSection = count(array_intersect($reqSections, $allowedForTech)) > 0;
+
+            if (!$hasAllowedSection) {
+                abort(403, 'Acceso denegado por confidencialidad. Tu perfil técnico no tiene autorización para ingresar a las áreas de control psicopedagógico.');
+            }
+
             return $next($request);
         }
 

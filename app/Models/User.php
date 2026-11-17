@@ -96,9 +96,9 @@ class User extends Authenticatable
 
     public function hasSectionPermission(string $section): bool
     {
-        // El administrador siempre tiene acceso completo a todas las secciones
         if ($this->isAdminTecnico()) {
-            return true;
+            // Devuelve 'true' (acceso permitido) solo si la sección NO está en este arreglo de restringidas
+            return !in_array($section, ['alumnos', 'acuerdos', 'calendario']);
         }
 
         $perms = $this->section_permissions ?? [];
