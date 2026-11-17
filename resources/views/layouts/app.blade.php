@@ -37,7 +37,8 @@
 
     {{-- Brand --}}
     <a href="{{ route('dashboard') }}" class="sidebar-brand" tabindex="0">
-        <div class="sidebar-brand-logo" aria-hidden="true">F</div>
+        <img src="{{ asset('img/logo.png') }}" alt="Logo Instituto Félix" class="sidebar-brand-logo" style="max-height: 40px; width: auto; border-radius: 8px;">
+
         <span class="sidebar-brand-name">Monitor<br>Psicopedagógico</span>
     </a>
 
