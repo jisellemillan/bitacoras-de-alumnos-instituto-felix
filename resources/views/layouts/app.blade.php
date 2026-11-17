@@ -13,6 +13,7 @@
 
     {{-- Livewire styles --}}
     @livewireStyles
+    <link rel="icon" href="{{ asset('img/logo-felix.jpg') }}" type="image/jpeg">
 </head>
 <body>
 

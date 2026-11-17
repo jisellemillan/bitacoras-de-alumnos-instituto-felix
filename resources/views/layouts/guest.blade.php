@@ -15,6 +15,7 @@
         <!-- Scripts -->
         @vite(['resources/css/main.css', 'resources/js/app.js'])
         @livewireStyles
+        <link rel="icon" href="{{ asset('img/logo-felix.jpg') }}" type="image/jpeg">
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="auth-layout">
