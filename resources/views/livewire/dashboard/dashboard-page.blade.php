@@ -32,8 +32,8 @@
         @endif
 
         @if($totalGrupos !== null)
-        <a href="{{ route('groups.index') }}" class="stat-card stat-card--link" title="Ir a Grupos">
-            <div class="stat-card-icon gold">
+        <a href="{{ route('groups.index') }}" class="stat-card stat-card--link " title="Ir a Grupos">
+            <div class="stat-card-icon !bg-red-100 !text-red-800 ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                      stroke-linejoin="round">
@@ -41,7 +41,7 @@
                     <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
             </div>
-            <div class="stat-card-info">
+            <div class="stat-card-info ">
                 <div class="stat-card-value">{{ $totalGrupos }}</div>
                 <div class="stat-card-label">Total de grupos</div>
                 <div class="stat-card-link-hint">Ver todos →</div>

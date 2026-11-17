@@ -69,7 +69,7 @@
                             </div>
                         </td>
                         <td data-label="Rol">
-                            <span class="badge {{ $u->isAdminTecnico() ? 'badge-yellow' : 'badge-green' }}">
+                            <span class="badge !bg-red-100 !text-red-800 !border !border-red-200">
                                 {{ $u->role->label() }}
                             </span>
                         </td>

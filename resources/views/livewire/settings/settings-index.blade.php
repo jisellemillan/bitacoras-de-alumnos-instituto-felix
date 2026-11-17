@@ -9,15 +9,15 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {{-- Tarjeta Gestión de Grupos --}}
-        <a href="{{ route('groups.index') }}" class="card p-6 hover:shadow-lg transition-all border border-green-100 hover:border-green-300 group block">
+        <a href="{{ route('groups.index') }}" class="card p-6 hover:shadow-lg transition-all border border-red-100 hover:border-red-300 group block">
             <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-xl bg-green-100 text-green-800 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <div class="w-12 h-12 rounded-xl bg-red-100 text-red-800 flex items-center justify-center group-hover:scale-105 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 </div>
                 <div>
-                    <h2 class="font-bold text-gray-900 group-hover:text-green-800 transition-colors text-base">Gestión de Grupos Escolares</h2>
+                    <h2 class="font-bold text-gray-900 group-hover:text-red-800 transition-colors text-base">Gestión de Grupos Escolares</h2>
                     <p class="text-xs text-muted mt-1">Administra grados de 1° a 6°, secciones, nombres distintivos y conteo de alumnos.</p>
-                    <span class="inline-flex items-center gap-1 text-xs font-bold text-green-700 mt-3 group-hover:underline">
+                    <span class="inline-flex items-center gap-1 text-xs font-bold text-red-700 mt-3 group-hover:underline">
                         Ver {{ $totalGroups }} grupos registrados →
                     </span>
                 </div>

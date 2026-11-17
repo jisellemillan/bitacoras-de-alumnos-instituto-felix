@@ -2,12 +2,12 @@
     {{-- ENCABEZADO DE PÁGINA --}}
     <div class="page-header">
         <div>
-            <div class="page-pretitle">ADMINISTRACIÓN ESCOLAR</div>
-            <h1 class="page-title">Gestión de Grupos</h1>
+            <div class="page-pretitle !text-red-900 ">ADMINISTRACIÓN ESCOLAR</div>
+            <h1 class="page-title !text-red-900">Gestión de Grupos</h1>
             <p class="page-subtitle">Organización de grados, secciones y distribución de alumnos por ciclo escolar.</p>
         </div>
         <div class="page-actions">
-            <button type="button" wire:click="openCreateModal" class="btn btn-primary">
+            <button type="button" wire:click="openCreateModal " class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 <span>Nuevo Grupo</span>
             </button>
@@ -64,15 +64,15 @@
 
         {{-- TABLA DE GRUPOS --}}
         <table class="data-table">
-            <thead>
+            <thead class="border-b-2 border-red-800">
                 <tr>
-                    <th>Grupo / Sección</th>
-                    <th>Grado Escolar</th>
-                    <th>Nombre / Distintivo</th>
-                    <th>Ciclo Escolar</th>
-                    <th class="text-center">Alumnos Asignados</th>
-                    <th>Descripción</th>
-                    <th class="text-right">Acciones</th>
+                    <th class="!bg-red-50 !text-red-900">Grupo / Sección</th>
+                    <th class="!bg-red-50 !text-red-900">Grado Escolar</th>
+                    <th class="!bg-red-50 !text-red-900">Nombre / Distintivo</th>
+                    <th class="!bg-red-50 !text-red-900">Ciclo Escolar</th>
+                    <th class="text-center !bg-red-50 !text-red-900">Alumnos Asignados</th>
+                    <th class="!bg-red-50 !text-red-900">Descripción</th>
+                    <th class="text-right !bg-red-50 !text-red-900">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -80,11 +80,11 @@
                     <tr>
                         <td data-label="Grupo">
                             <a href="{{ route('groups.show', $grp) }}" class="flex items-center gap-3 group/grp hover:opacity-95">
-                                <div class="w-10 h-10 rounded-xl bg-green-100 text-green-900 font-bold flex items-center justify-center text-sm shadow-xs border border-green-200 group-hover/grp:bg-[#1F5C2E] group-hover/grp:text-white transition-colors">
+                                <div class="w-10 h-10 rounded-xl bg-red-100 text-red-900 font-bold flex items-center justify-center text-sm shadow-xs border border-red-200 group-hover/grp:bg-red-700 group-hover/grp:text-white transition-colors">
                                     {{ $grp->grade->label() }}{{ $grp->section }}
                                 </div>
                                 <div>
-                                    <span class="font-bold text-green-950 group-hover/grp:text-green-700 transition-colors block">
+                                    <span class="font-bold text-red-950 group-hover/grp:text-red-700 transition-colors block">
                                         Grupo {{ $grp->label }}
                                     </span>
                                     <span class="text-xs text-muted">{{ $grp->grade->label() }} de Primaria · Sección {{ $grp->section }}</span>
@@ -96,7 +96,7 @@
                         </td>
                         <td data-label="Nombre / Distintivo">
                             @if($grp->name)
-                                <span class="font-semibold text-sm text-green-800">{{ $grp->name }}</span>
+                                <span class="font-semibold text-sm text-red-800">{{ $grp->name }}</span>
                             @else
                                 <span class="text-xs text-muted italic">Sin distintivo</span>
                             @endif
@@ -109,7 +109,7 @@
                         <td data-label="Alumnos" class="text-center">
                             <a href="{{ route('groups.show', $grp) }}" class="inline-block hover:scale-105 transition-transform" title="Ver alumnos de este grupo">
                                 @if($grp->students_count > 0)
-                                    <span class="badge badge-green font-bold">
+                                    <span class="badge badge-red font-bold">
                                         {{ $grp->students_count }} {{ $grp->students_count === 1 ? 'alumno' : 'alumnos' }} →
                                     </span>
                                 @else

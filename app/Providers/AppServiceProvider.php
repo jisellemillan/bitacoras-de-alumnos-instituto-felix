@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Timezone para México / Tijuana
-        config(['app.timezone' => env('APP_TIMEZONE', 'America/Tijuana')]);
         Carbon::setLocale('es_MX');
 
         // Strict model in development: catch lazy loading, missing fillable, etc.
