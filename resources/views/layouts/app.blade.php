@@ -198,7 +198,7 @@
 
         {{-- Campana de alertas --}}
         @cannot('isAdminTecnico')
-        <livewire:shared.notifications-bell />
+        @livewire('layout.notification-bell')
         @endcannot
 
         {{-- Menú perfil --}}
