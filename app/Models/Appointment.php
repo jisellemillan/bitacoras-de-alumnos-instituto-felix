@@ -34,4 +34,10 @@ class Appointment extends Model
 
     public function scopeUpcoming($query)     { return $query->where('starts_at', '>=', now())->orderBy('starts_at'); }
     public function scopeScheduled($query)    { return $query->where('status', 'programada'); }
+
+    // Accesor para compatibilidad con vistas y reportes
+    public function getReasonAttribute(): ?string
+    {
+        return $this->notes;
+    }
 }

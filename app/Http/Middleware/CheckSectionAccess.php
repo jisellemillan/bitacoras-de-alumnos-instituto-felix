@@ -30,9 +30,9 @@ class CheckSectionAccess
                 }
             }
 
-            // A) Bloqueo por ID: Si la URL intenta acceder a un alumno o grupo específico (ej. /grupos/1)
-            if ($student || $group) {
-                abort(403, 'Acceso denegado. Los detalles internos de los grupos y expedientes son confidenciales.');
+            // A) Bloqueo por ID: Si la URL intenta acceder al expediente confidencial de un alumno (ej. /alumnos/1)
+            if ($student) {
+                abort(403, 'Acceso denegado. Los expedientes psicopedagógicos individuales de los alumnos son confidenciales.');
             }
 
             // B) Bloqueo por Sección: Solo lo dejamos pasar si la ruta está etiquetada 
@@ -56,6 +56,16 @@ class CheckSectionAccess
         // 3. CANDADO DE PROPIEDAD ESTRICTA (Protege las URL con ID)
         if ($groupId || $studentId) {
             $accesoPermitido = false;
+
+            // Dirección y Coordinación Académica tienen visibilidad total sobre grupos y alumnos
+            $rolesConAccesoTotal = [
+                \App\Enums\UserRole::Direccion,
+                \App\Enums\UserRole::CoordinacionAcademica,
+                \App\Enums\UserRole::Psicopedagogia,
+            ];
+            if (in_array($user->role, $rolesConAccesoTotal)) {
+                return $next($request);
+            }
 
             // Verificar si tiene derecho a ver este GRUPO
             if ($groupId) {
@@ -81,16 +91,12 @@ class CheckSectionAccess
                 }
             }
 
-            // EXCEPCIÓN: Psicopedagogía tiene acceso libre para ver expedientes porque ellos aprueban y gestionan.
-            // Si NO se permitió el acceso y NO es Psicopedagogía, se bloquea definitivamente.
-            if (!$accesoPermitido && !$user->isPsicopedagogia()) {
+            // Si NO se permitió el acceso (no es propietario ni tiene grant), se bloquea definitivamente.
+            if (!$accesoPermitido) {
                 abort(403, "Acceso denegado. No tienes asignado este registro ni cuentas con una solicitud de acceso aprobada para verlo.");
             }
 
-            // Si pasó las pruebas de propiedad/permiso, lo dejamos entrar sin necesidad de revisar sus casillas estáticas.
-            if ($accesoPermitido || $user->isPsicopedagogia()) {
-                return $next($request);
-            }
+            return $next($request);
         }
 
         // 4. EVALUACIÓN DE PERMISOS ESTÁTICOS (Protege las URL generales como el menú principal /alumnos)

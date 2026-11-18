@@ -65,18 +65,25 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex items-center gap-2.5 flex-wrap">
             @if($targetGroup)
-                <a href="{{ route('groups.show', $targetGroup) }}" class="btn btn-outline bg-white/20 text-white border-white hover:bg-white hover:text-green-900 btn-sm font-semibold">
-                    ← Volver a Grupo {{ $targetGroup->label }}
+                <a href="{{ route('groups.show', $targetGroup) }}"
+                   class="btn btn-sm font-bold shadow-sm inline-flex items-center gap-1.5 transition-all text-emerald-950 bg-white hover:bg-emerald-50 border border-emerald-200 hover:shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    <span>Volver a Grupo {{ $targetGroup->label }}</span>
                 </a>
             @else
-                <a href="{{ route('students.index') }}" class="btn btn-outline bg-white/20 text-white border-white hover:bg-white hover:text-green-900 btn-sm">
-                    ← Volver al listado
+                <a href="{{ route('students.index') }}"
+                   class="btn btn-sm font-bold shadow-sm inline-flex items-center gap-1.5 transition-all text-emerald-950 bg-white hover:bg-emerald-50 border border-emerald-200 hover:shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    <span>Volver al listado</span>
                 </a>
             @endif
-            <a href="{{ route('reports.pdf.student', $student) }}" target="_blank" class="btn btn-secondary btn-sm">
-                Descargar Expediente PDF
+            <a href="{{ route('reports.pdf.student', $student) }}"
+               target="_blank"
+               class="btn btn-secondary btn-sm font-bold shadow-sm inline-flex items-center gap-1.5 hover:shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Descargar expediente PDF</span>
             </a>
         </div>
     </div>

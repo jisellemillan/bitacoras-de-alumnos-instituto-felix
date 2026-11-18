@@ -55,9 +55,10 @@
                     ← Volver a grupos
                 </a>
                 @if(auth()->user()->hasSectionPermission('alumnos'))
-                    <a href="{{ route('students.index') }}" class="btn btn-primary btn-sm">
-                        + Registrar alumno
-                    </a>
+                    <button type="button" wire:click="openCreateModal" class="btn btn-primary btn-sm flex items-center gap-1.5 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>Registrar alumno</span>
+                    </button>
                 @endif
             </div>
         </div>
@@ -119,10 +120,16 @@
                                     {{ strtoupper(substr($st->first_name, 0, 1) . substr($st->last_name, 0, 1)) }}
                                 </div>
                                 <div>
-                                    <a href="{{ route('students.show', ['student' => $st->id, 'from_group' => $group->id]) }}"
-                                       class="font-bold text-green-950 hover:text-green-700 block transition-colors">
-                                        {{ $st->full_name }}
-                                    </a>
+                                    @if(auth()->user()->hasSectionPermission('alumnos'))
+                                        <a href="{{ route('students.show', ['student' => $st->id, 'from_group' => $group->id]) }}"
+                                           class="font-bold text-green-950 hover:text-green-700 block transition-colors">
+                                            {{ $st->full_name }}
+                                        </a>
+                                    @else
+                                        <span class="font-bold text-green-950 block">
+                                            {{ $st->full_name }}
+                                        </span>
+                                    @endif
                                     <span class="text-xs text-muted">
                                         Expediente digital activo
                                     </span>
@@ -134,11 +141,15 @@
                             <span class="text-xs text-muted">{{ $st->age ? $st->age . ' años' : 'Edad no registrada' }}</span>
                         </td>
                         <td data-label="Diagnóstico">
-                            @if($st->studentFile && $st->studentFile->primary_diagnosis)
-                                <div class="font-medium text-sm text-green-950">{{ $st->studentFile->primary_diagnosis }}</div>
-                                <span class="text-xs text-muted">{{ $st->studentFile->file_type === 'con_diagnostico' ? 'Diagnóstico formal' : 'En detección' }}</span>
+                            @if(auth()->user()->canAccessPsychContent())
+                                @if($st->studentFile && $st->studentFile->primary_diagnosis)
+                                    <div class="font-medium text-sm text-green-950">{{ $st->studentFile->primary_diagnosis }}</div>
+                                    <span class="text-xs text-muted">{{ $st->studentFile->file_type === 'con_diagnostico' ? 'Diagnóstico formal' : 'En detección' }}</span>
+                                @else
+                                    <span class="text-xs text-muted italic">Sin diagnóstico registrado</span>
+                                @endif
                             @else
-                                <span class="text-xs text-muted italic">Sin diagnóstico registrado</span>
+                                <span class="text-xs text-muted italic">Confidencial</span>
                             @endif
                         </td>
                         <td data-label="Ruta">
@@ -176,11 +187,15 @@
                             @endif
                         </td>
                         <td data-label="Acciones" class="text-right">
-                            <a href="{{ route('students.show', ['student' => $st->id, 'from_group' => $group->id]) }}"
-                               class="btn btn-outline btn-sm inline-flex items-center gap-1.5 hover:bg-green-50 hover:text-green-800">
-                                <span>Ver expediente</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                            </a>
+                            @if(auth()->user()->hasSectionPermission('alumnos'))
+                                <a href="{{ route('students.show', ['student' => $st->id, 'from_group' => $group->id]) }}"
+                                   class="btn btn-outline btn-sm inline-flex items-center gap-1.5 hover:bg-green-50 hover:text-green-800">
+                                    <span>Ver expediente</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </a>
+                            @else
+                                <span class="text-xs text-muted italic">—</span>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -199,9 +214,9 @@
                                         ← Volver a la lista de grupos
                                     </a>
                                     @if(auth()->user()->hasSectionPermission('alumnos'))
-                                        <a href="{{ route('students.index') }}" class="btn btn-primary btn-sm">
-                                            Ir al Directorio de Alumnos
-                                        </a>
+                                        <button type="button" wire:click="openCreateModal" class="btn btn-primary btn-sm">
+                                            + Registrar alumno en este grupo
+                                        </button>
                                     @endif
                                 </div>
                             </div>
@@ -221,4 +236,7 @@
             </div>
         </div>
     </div>
+
+    {{-- MODAL DE REGISTRO DE ALUMNO (COMPARTIDO) --}}
+    @include('livewire.students.partials.student-modal')
 </div>

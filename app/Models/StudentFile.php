@@ -110,7 +110,12 @@ class StudentFile extends Model
             return [];
         }
         return collect($this->need_areas)
-            ->map(fn ($v) => NeedArea::from($v)->label())
+            ->map(function ($v) {
+                if ($v instanceof NeedArea) {
+                    return $v->label();
+                }
+                return NeedArea::tryFrom($v)?->label() ?? (string) $v;
+            })
             ->all();
     }
 }
