@@ -18,9 +18,9 @@
     {{-- BARRA DE FILTROS Y BÚSQUEDA --}}
     <div class="table-card mb-6">
         <div class="p-4 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between bg-white border-b">
-            <div class="flex-1 flex flex-col sm:flex-row gap-3">
-                {{-- Búsqueda libre --}}
-                <div class="relative flex-1">
+            <div class="flex-1 flex flex-col sm:flex-row gap-3" style="min-width:0">
+                {{-- Búsqueda libre (mayor ancho) --}}
+                <div class="relative" style="flex:3 1 0%;min-width:0">
                     <input type="text"
                            wire:model.live.debounce.300ms="search"
                            placeholder="Buscar por sección o nombre del grupo..."
@@ -32,7 +32,7 @@
                 </div>
 
                 {{-- Filtro por grado --}}
-                <div class="w-full sm:w-44">
+                <div style="flex:0 0 140px;width:100%;max-width:100%">
                     <select wire:model.live="gradeFilter" class="form-select text-sm w-full">
                         <option value="">Todos los grados</option>
                         <option value="1">1° de Primaria</option>
@@ -45,11 +45,11 @@
                 </div>
 
                 {{-- Filtro por ciclo escolar --}}
-                <div class="w-full sm:w-48">
+                <div style="flex:0 0 155px;width:100%;max-width:100%">
                     <select wire:model.live="cycleFilter" class="form-select text-sm w-full">
-                        <option value="">Ciclo actual por defecto</option>
+                        <option value="">Ciclo actual</option>
                         @foreach($cycles as $c)
-                            <option value="{{ $c->id }}">Ciclo {{ $c->name }} {{ $c->is_active ? '(Activo)' : '' }}</option>
+                            <option value="{{ $c->id }}">{{ $c->name }} {{ $c->is_active ? '(Activo)' : '' }}</option>
                         @endforeach
                     </select>
                 </div>

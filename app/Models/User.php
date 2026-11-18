@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasMany(AuditLog::class);
     }
 
+    public function passwordRequests(): HasMany
+    {
+        return $this->hasMany(PasswordRequest::class);
+    }
+
     // ─── Helpers ──────────────────────────────────────────────────────────────
 
     public function hasRole(UserRole $role): bool

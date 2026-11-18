@@ -36,4 +36,15 @@ class Interview extends Model
     public function schoolCycle(): BelongsTo { return $this->belongsTo(SchoolCycle::class); }
     public function author(): BelongsTo      { return $this->belongsTo(User::class, 'created_by'); }
     public function agreements(): HasMany    { return $this->hasMany(Agreement::class); }
+
+    // Accesores para compatibilidad con vistas y reportes
+    public function getIntervieweeNameAttribute(): ?string
+    {
+        return $this->attendees;
+    }
+
+    public function getReasonAttribute(): ?string
+    {
+        return $this->purpose_and_objective;
+    }
 }

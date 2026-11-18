@@ -36,4 +36,10 @@ class Agreement extends Model
 
     public function scopePending($query)    { return $query->where('status', AgreementStatus::Pendiente->value); }
     public function scopeOverdue($query)    { return $query->where('due_date', '<', now())->pending(); }
+
+    // Alias defensivo para compatibilidad si se consulta como target_date
+    public function getTargetDateAttribute()
+    {
+        return $this->due_date;
+    }
 }

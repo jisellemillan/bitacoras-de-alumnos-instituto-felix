@@ -113,6 +113,7 @@
         <span class="sidebar-section-label" style="margin-top:.75rem">Administración</span>
 
         @if(auth()->user()->hasSectionPermission('usuarios'))
+        @php $pendingPasswordRequests = \App\Models\PasswordRequest::where('estado', 'pendiente')->count(); @endphp
         <a href="{{ route('users.index') }}"
            class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
            title="Gestión de Usuarios">
@@ -120,6 +121,18 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             </span>
             <span class="sidebar-link-text">Gestión de Usuarios</span>
+        </a>
+
+        <a href="{{ route('password-requests.index') }}"
+           class="sidebar-link {{ request()->routeIs('password-requests.*') ? 'active' : '' }}"
+           title="Solicitudes de Contraseña">
+            <span class="sidebar-link-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+            </span>
+            <span class="sidebar-link-text">Solicitudes de Contraseña</span>
+            @if($pendingPasswordRequests > 0)
+                <span class="sidebar-badge">{{ $pendingPasswordRequests }}</span>
+            @endif
         </a>
         @endif
 
@@ -131,6 +144,15 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
             </span>
             <span class="sidebar-link-text">Gestión de Grupos</span>
+        </a>
+
+        <a href="{{ route('school-cycles.index') }}"
+           class="sidebar-link {{ request()->routeIs('school-cycles.*') ? 'active' : '' }}"
+           title="Gestión de Periodos">
+            <span class="sidebar-link-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="16" y1="2" x2="16" y2="6" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke-linecap="round"/><line x1="8" y1="14" x2="8.01" y2="14" stroke-linecap="round" stroke-width="2.5"/><line x1="12" y1="14" x2="12.01" y2="14" stroke-linecap="round" stroke-width="2.5"/><line x1="8" y1="18" x2="8.01" y2="18" stroke-linecap="round" stroke-width="2.5"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-linecap="round" stroke-width="2.5"/></svg>
+            </span>
+            <span class="sidebar-link-text">Gestión de Periodos</span>
         </a>
 
         <a href="{{ route('settings.index') }}"
